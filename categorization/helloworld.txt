@@ -1,0 +1,2 @@
+./test/test1.txt neg
+./test/test2.txt neg
