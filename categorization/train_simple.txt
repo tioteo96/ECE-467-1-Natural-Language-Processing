@@ -1,5 +1,0 @@
-./train/train1.txt neg
-./train/train2.txt neg
-./train/train3.txt neg
-./train/train4.txt pos
-./train/train5.txt pos
