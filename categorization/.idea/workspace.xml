@@ -26,7 +26,7 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager">
-    <configuration name="Bayes" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="SpacyLemma" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="categorization" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -39,7 +39,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Bayes.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/SpacyLemma.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -50,7 +50,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.Bayes" />
+        <item itemvalue="Python.SpacyLemma" />
       </list>
     </recent_temporary>
   </component>
@@ -73,7 +73,7 @@
       <workItem from="1584045553055" duration="1000" />
       <workItem from="1584045666870" duration="4610000" />
       <workItem from="1584117884526" duration="39859000" />
-      <workItem from="1584228296127" duration="14041000" />
+      <workItem from="1584228296127" duration="38489000" />
     </task>
     <servers />
   </component>

@@ -1,28 +1,34 @@
 import collections
 import math
 import sys
+import nltk
+
 
 from nltk.stem import LancasterStemmer
-from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize, sent_tokenize
 
 
 # according to the number of file lists file,
 # make train_doc_list as a dictionary, using classes as keys
 # make test_doc_list as a list, without classes
-def parse_arg():                        # TODO try to even out the number of docs per classes
+def parse_arg():
     argv = sys.argv[1:]
     train_list = {}
     test_list = []
     N_doc = 0
+    c_count = {}
     if len(argv) == 2:
         train_file = open(str(argv[0]), "r")
         test_file = open(str(argv[1]), "r")
 
-        for line in train_file:         # TODO ignore if file is too small
+        for line in train_file:
             if line.strip().split()[1] in train_list:
                 train_list[line.strip().split()[1]].append(line.strip().split()[0])
+                c_count[line.strip().split()[1]] += 1;
             else:
                 train_list[line.strip().split()[1]] = [line.strip().split()[0]]
+                c_count[line.strip().split()[1]] = 1;
             N_doc += 1
 
         for line in test_file:
@@ -53,12 +59,14 @@ def parse_arg():                        # TODO try to even out the number of doc
         file.close()
 
     else:
-        print('usage: python Bayes.py training_doc test_file')
+        print('usage: python SpacyLemma.py training_doc test_file')
         sys.exit(2)
 
+    '''
+    min_key = min(c_count, key = lambda k: c_count[k])
     for category in train_list:
-        print(category + str(len(train_list[category])))
-
+        del train_list[category][c_count[min_key]:]
+    '''
     return train_list, test_list, N_doc
 
 
@@ -69,6 +77,7 @@ def train_bayes(train_list, N_d):
     log_likelihood = {}
     alpha = 0.05
     lc = LancasterStemmer()
+    tags = ['NN', 'NNS', 'NNP', 'NNPS']
     for c in train_list.keys():
         # log_prior
         for file in train_list[c]:
@@ -82,21 +91,25 @@ def train_bayes(train_list, N_d):
 
             # V & big_doc
             cur_file = open(file, 'r')
-            token_file = word_tokenize(cur_file.read())
-            # binaryNB = []
-            for word in token_file:
-                stem_word = lc.stem(word)
-                V.append(stem_word)
-                # if stem_word not in binaryNB:
-                    # binaryNB.append(stem_word)
-                if c in big_doc:
-                    big_doc[c].append(stem_word)
-                else:
-                    big_doc[c] = [stem_word]
+            token_file = sent_tokenize(cur_file.read())
+            for sent in token_file:
+                token_sent = word_tokenize(sent)
+                tagged_sent = nltk.pos_tag(token_sent)
+                for word in tagged_sent:
+                    weight = 1;
+                    if word[1] in tags:
+                        weight = 3;
+                    stem_word = lc.stem(word[0])
+                    V.append(stem_word)
+                    for i in range(weight):
+                        if c in big_doc:
+                            big_doc[c].append(stem_word)
+                        else:
+                            big_doc[c] = [stem_word]
             cur_file.close()
 
     # stop words
-    stop_num = 0
+    stop_num = 50
     counter = collections.Counter(V)
     for stop_word, count in counter.most_common(stop_num):
         V = list(filter(lambda x: x != stop_word, V))
@@ -113,18 +126,20 @@ def train_bayes(train_list, N_d):
 def test_bayes(test_doc, log_prior, log_likelihood, C, V):
     sum = {}
     cur_file = open(test_doc, 'r')
-    token_file = word_tokenize(cur_file.read())
+    token_file = sent_tokenize(cur_file.read())
     lc = LancasterStemmer()
     for c in C:
         binaryNB = []
         sum[c] = log_prior[c][1]
-        cur_file.seek(0)
-        for word in token_file:
-            stem_word = lc.stem(word)
-            if stem_word not in binaryNB:
-                binaryNB.append(stem_word)
-                if stem_word in V:
-                    sum[c] = sum[c] + log_likelihood[(stem_word, c)]
+        for sent in token_file:
+            token_sent = word_tokenize(sent)
+            tagged_sent = nltk.pos_tag(token_sent)
+            for word in tagged_sent:
+                stem_word = lc.stem(word[0])
+                if stem_word not in binaryNB:
+                    binaryNB.append(stem_word)
+                    if stem_word in V:
+                        sum[c] = sum[c] + log_likelihood[(stem_word, c)]
     C_NB = max(sum, key=sum.get)
     cur_file.close()
     return C_NB
