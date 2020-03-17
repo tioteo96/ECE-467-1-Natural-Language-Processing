@@ -68,7 +68,7 @@ def train_bayes(train_list, N_d):
     V = set()
     big_doc = {}
     log_likelihood = {}
-    alpha = 0.056
+    alpha = 0.05
     lc = LancasterStemmer()
     tags = ['NN', 'NNS', 'NNP', 'NNPS']
     stop_words = set(stopwords.words('english'))
@@ -85,27 +85,20 @@ def train_bayes(train_list, N_d):
 
             # V & big_doc
             cur_file = open(file, 'r')
-            token_file = sent_tokenize(cur_file.read())
-            for sent in token_file:
-                token_sent = word_tokenize(sent)
-                tagged_sent = nltk.pos_tag(token_sent)
-                for word in tagged_sent:
-                    weight = 1
-                    if word[1] in tags:
-                        weight = 3
-                    stem_word = lc.stem(word[0])
-                    if stem_word not in stop_words:
-                        if stem_word not in V:
-                            V.add(stem_word)
-                        for i in range(weight):
-                            if c in big_doc:
-                                if stem_word in big_doc[c]:
-                                    big_doc[c][stem_word] += 1
-                                else:
-                                    big_doc[c][stem_word] = 1
-                            else:
-                                big_doc[c] = {}
-                                big_doc[c][stem_word] = 1
+            token_file = word_tokenize(cur_file.read())
+            for word in token_file:
+                stem_word = lc.stem(word)
+                if stem_word not in stop_words:
+                    if stem_word not in V:
+                        V.add(stem_word)
+                    if c in big_doc:
+                        if stem_word in big_doc[c]:
+                            big_doc[c][stem_word] += 1
+                        else:
+                            big_doc[c][stem_word] = 1
+                    else:
+                        big_doc[c] = {}
+                        big_doc[c][stem_word] = 1
             cur_file.close()
 
     big_doc_size = {}

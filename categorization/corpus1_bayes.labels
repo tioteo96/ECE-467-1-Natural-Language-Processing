@@ -44,7 +44,7 @@
 ./corpus1/test/15204.article Oth
 ./corpus1/test/15802.article Str
 ./corpus1/test/25052.article Str
-./corpus1/test/44891.article Str
+./corpus1/test/44891.article Pol
 ./corpus1/test/15433.article Pol
 ./corpus1/test/26075.article Dis
 ./corpus1/test/24651.article Cri
@@ -397,7 +397,7 @@
 ./corpus1/test/46432.article Str
 ./corpus1/test/16817.article Cri
 ./corpus1/test/25783.article Pol
-./corpus1/test/26836.article Str
+./corpus1/test/26836.article Pol
 ./corpus1/test/25519.article Oth
 ./corpus1/test/15177.article Str
 ./corpus1/test/05418.article Dis

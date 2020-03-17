@@ -1,6 +1,8 @@
+import collections
 import math
 import sys
 import nltk
+
 
 from nltk.stem import LancasterStemmer
 from nltk.corpus import stopwords
@@ -60,18 +62,22 @@ def parse_arg():
         print('usage: python SpacyLemma.py training_doc test_file')
         sys.exit(2)
 
+    '''
+    min_key = min(c_count, key = lambda k: c_count[k])
+    for category in train_list:
+        del train_list[category][c_count[min_key]:]
+    '''
     return train_list, test_list, N_doc
 
 
 def train_bayes(train_list, N_d):
     log_prior = {}
-    V = set()
+    V = []
     big_doc = {}
     log_likelihood = {}
-    alpha = 0.056
+    alpha = 0.05
     lc = LancasterStemmer()
     tags = ['NN', 'NNS', 'NNP', 'NNPS']
-    stop_words = set(stopwords.words('english'))
     for c in train_list.keys():
         # log_prior
         for file in train_list[c]:
@@ -90,35 +96,34 @@ def train_bayes(train_list, N_d):
                 token_sent = word_tokenize(sent)
                 tagged_sent = nltk.pos_tag(token_sent)
                 for word in tagged_sent:
-                    weight = 1
+                    weight = 1;
                     if word[1] in tags:
-                        weight = 3
+                        weight = 3;
                     stem_word = lc.stem(word[0])
-                    if stem_word not in stop_words:
-                        if stem_word not in V:
-                            V.add(stem_word)
-                        for i in range(weight):
-                            if c in big_doc:
-                                if stem_word in big_doc[c]:
-                                    big_doc[c][stem_word] += 1
-                                else:
-                                    big_doc[c][stem_word] = 1
-                            else:
-                                big_doc[c] = {}
-                                big_doc[c][stem_word] = 1
+                    V.append(stem_word)
+                    for i in range(weight):
+                        if c in big_doc:
+                            big_doc[c].append(stem_word)
+                        else:
+                            big_doc[c] = [stem_word]
             cur_file.close()
 
-    big_doc_size = {}
+    # stop words
+    stop_num = 50
+    counter = collections.Counter(V)
+    for stop_word, count in counter.most_common(stop_num):
+        V = list(filter(lambda x: x != stop_word, V))
+    V = list(set(V))
+
     for c in train_list.keys():
-        big_doc_size[c] = sum(big_doc[c].values())
+        print(c)
+        print(len(big_doc[c]))
+
 
     # log_likelihood
     for c in train_list.keys():
         for w in V:
-            if w not in big_doc[c]:
-                log_likelihood[(w, c)] = math.log(alpha / (big_doc_size[c] + (alpha * len(V))))
-            else:
-                log_likelihood[(w, c)] = math.log((big_doc[c][w] + alpha) / (big_doc_size[c] + (alpha * len(V))))
+            log_likelihood[(w, c)] = math.log((big_doc[c].count(w) + alpha) / (len(big_doc[c]) + (alpha * len(V))))
 
     return log_prior, log_likelihood, V
 
@@ -126,17 +131,20 @@ def train_bayes(train_list, N_d):
 def test_bayes(test_doc, log_prior, log_likelihood, C, V):
     sum = {}
     cur_file = open(test_doc, 'r')
-    token_file = word_tokenize(cur_file.read())
+    token_file = sent_tokenize(cur_file.read())
     lc = LancasterStemmer()
     for c in C:
         binaryNB = []
         sum[c] = log_prior[c][1]
-        for word in token_file:
-            stem_word = lc.stem(word)
-            if stem_word not in binaryNB:
-                binaryNB.append(stem_word)
-                if stem_word in V:
-                    sum[c] = sum[c] + log_likelihood[(stem_word, c)]
+        for sent in token_file:
+            token_sent = word_tokenize(sent)
+            tagged_sent = nltk.pos_tag(token_sent)
+            for word in tagged_sent:
+                stem_word = lc.stem(word[0])
+                if stem_word not in binaryNB:
+                    binaryNB.append(stem_word)
+                    if stem_word in V:
+                        sum[c] = sum[c] + log_likelihood[(stem_word, c)]
     C_NB = max(sum, key=sum.get)
     cur_file.close()
     return C_NB
