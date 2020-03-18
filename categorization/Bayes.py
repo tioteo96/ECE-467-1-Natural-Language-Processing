@@ -1,15 +1,13 @@
 import math
 import sys
 import nltk
+import time
 
 from nltk.stem import LancasterStemmer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize, sent_tokenize
 
 
-# according to the number of file lists file,
-# make train_doc_list as a dictionary, using classes as keys
-# make test_doc_list as a list, without classes
 def parse_arg():
     argv = sys.argv[1:]
     train_list = {}
@@ -68,7 +66,7 @@ def train_bayes(train_list, N_d):
     V = set()
     big_doc = {}
     log_likelihood = {}
-    alpha = 0.056
+    alpha = 0.5
     lc = LancasterStemmer()
     tags = ['NN', 'NNS', 'NNP', 'NNPS']
     stop_words = set(stopwords.words('english'))
@@ -92,20 +90,19 @@ def train_bayes(train_list, N_d):
                 for word in tagged_sent:
                     weight = 1
                     if word[1] in tags:
-                        weight = 3
+                        weight = 2
                     stem_word = lc.stem(word[0])
                     if stem_word not in stop_words:
                         if stem_word not in V:
                             V.add(stem_word)
-                        for i in range(weight):
-                            if c in big_doc:
-                                if stem_word in big_doc[c]:
-                                    big_doc[c][stem_word] += 1
-                                else:
-                                    big_doc[c][stem_word] = 1
+                        if c in big_doc:
+                            if stem_word in big_doc[c]:
+                                big_doc[c][stem_word] += weight
                             else:
-                                big_doc[c] = {}
-                                big_doc[c][stem_word] = 1
+                                big_doc[c][stem_word] = weight
+                        else:
+                            big_doc[c] = {}
+                            big_doc[c][stem_word] = weight
             cur_file.close()
 
     big_doc_size = {}
@@ -118,7 +115,7 @@ def train_bayes(train_list, N_d):
             if w not in big_doc[c]:
                 log_likelihood[(w, c)] = math.log(alpha / (big_doc_size[c] + (alpha * len(V))))
             else:
-                log_likelihood[(w, c)] = math.log((big_doc[c][w] + alpha) / (big_doc_size[c] + (alpha * len(V))))
+                log_likelihood[(w, c)] = math.log((big_doc[c][w]) / (big_doc_size[c]))
 
     return log_prior, log_likelihood, V
 
@@ -129,12 +126,12 @@ def test_bayes(test_doc, log_prior, log_likelihood, C, V):
     token_file = word_tokenize(cur_file.read())
     lc = LancasterStemmer()
     for c in C:
-        binaryNB = []
+        binaryNB = set()
         sum[c] = log_prior[c][1]
         for word in token_file:
             stem_word = lc.stem(word)
             if stem_word not in binaryNB:
-                binaryNB.append(stem_word)
+                binaryNB.add(stem_word)
                 if stem_word in V:
                     sum[c] = sum[c] + log_likelihood[(stem_word, c)]
     C_NB = max(sum, key=sum.get)
@@ -143,6 +140,7 @@ def test_bayes(test_doc, log_prior, log_likelihood, C, V):
 
 
 if __name__ == '__main__':
+    tic = time.perf_counter()
     print('Parsing arguments ...')
     train_doc_list, test_doc_list, N = parse_arg()
     print('Training Naive Bayes ...')
@@ -158,3 +156,5 @@ if __name__ == '__main__':
         outfile.write(result)
 
     outfile.close()
+    toc = time.perf_counter()
+    print(str(toc - tic) + 'sec')

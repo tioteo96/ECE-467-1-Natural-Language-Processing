@@ -1,6 +1,6 @@
 import math
 import sys
-import nltk
+import time
 
 from nltk.stem import LancasterStemmer
 from nltk.corpus import stopwords
@@ -68,9 +68,7 @@ def train_bayes(train_list, N_d):
     V = set()
     big_doc = {}
     log_likelihood = {}
-    alpha = 0.05
-    lc = LancasterStemmer()
-    tags = ['NN', 'NNS', 'NNP', 'NNPS']
+    alpha = 0.01
     stop_words = set(stopwords.words('english'))
     for c in train_list.keys():
         # log_prior
@@ -87,18 +85,17 @@ def train_bayes(train_list, N_d):
             cur_file = open(file, 'r')
             token_file = word_tokenize(cur_file.read())
             for word in token_file:
-                stem_word = lc.stem(word)
-                if stem_word not in stop_words:
-                    if stem_word not in V:
-                        V.add(stem_word)
+                if word not in stop_words:
+                    if word not in V:
+                        V.add(word)
                     if c in big_doc:
-                        if stem_word in big_doc[c]:
-                            big_doc[c][stem_word] += 1
+                        if word in big_doc[c]:
+                            big_doc[c][word] += 1
                         else:
-                            big_doc[c][stem_word] = 1
+                            big_doc[c][word] = 1
                     else:
                         big_doc[c] = {}
-                        big_doc[c][stem_word] = 1
+                        big_doc[c][word] = 1
             cur_file.close()
 
     big_doc_size = {}
@@ -120,30 +117,29 @@ def test_bayes(test_doc, log_prior, log_likelihood, C, V):
     sum = {}
     cur_file = open(test_doc, 'r')
     token_file = word_tokenize(cur_file.read())
-    lc = LancasterStemmer()
     for c in C:
         binaryNB = []
         sum[c] = log_prior[c][1]
         for word in token_file:
-            stem_word = lc.stem(word)
-            if stem_word not in binaryNB:
-                binaryNB.append(stem_word)
-                if stem_word in V:
-                    sum[c] = sum[c] + log_likelihood[(stem_word, c)]
+            if word not in binaryNB:
+                binaryNB.append(word)
+            if word in V:
+                sum[c] = sum[c] + log_likelihood[(word, c)]
     C_NB = max(sum, key=sum.get)
     cur_file.close()
     return C_NB
 
 
 if __name__ == '__main__':
+    tic = time.perf_counter()
     print('Parsing arguments ...')
     train_doc_list, test_doc_list, N = parse_arg()
     print('Training Naive Bayes ...')
     log_p, log_ll, v = train_bayes(train_doc_list, N)
     class_list = train_doc_list.keys()
 
-    filename = input("Specify the output file name: ")
-    outfile = open(filename, 'w')
+    # filename = input("Specify the output file name: ")
+    outfile = open('corpus1_bayes.labels', 'w')
     print('Testing Naive Bayes ...')
     for doc in test_doc_list:
         C_nb = test_bayes(doc, log_p, log_ll, class_list, v)
@@ -151,3 +147,5 @@ if __name__ == '__main__':
         outfile.write(result)
 
     outfile.close()
+    toc = time.perf_counter()
+    print(str(toc - tic) + 'sec')
