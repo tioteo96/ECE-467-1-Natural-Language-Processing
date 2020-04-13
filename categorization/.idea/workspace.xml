@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d446e7b-cae4-4348-abf3-c8f3de82fed4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../parsing/CKY.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Bayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/Bayes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/corpus1_bayes.labels" beforeDir="false" afterPath="$PROJECT_DIR$/corpus1_bayes.labels" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast.py" beforeDir="false" afterPath="$PROJECT_DIR$/fast.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +82,11 @@
       <workItem from="1584045666870" duration="4610000" />
       <workItem from="1584117884526" duration="39859000" />
       <workItem from="1584228296127" duration="43836000" />
-      <workItem from="1584477076474" duration="10881000" />
+      <workItem from="1584477076474" duration="10913000" />
+      <workItem from="1586236750730" duration="18000" />
+      <workItem from="1586236789341" duration="5000" />
+      <workItem from="1586277454566" duration="57000" />
+      <workItem from="1586640110710" duration="2000" />
     </task>
     <servers />
   </component>
@@ -121,10 +122,10 @@
       <screen x="0" y="23" width="1440" height="793" />
     </state>
     <state x="221" y="58" key="SettingsEditor/0.23.1440.793@0.23.1440.793" timestamp="1584048787188" />
-    <state x="397" y="252" key="com.intellij.ide.util.TipDialog" timestamp="1584477076091">
+    <state x="397" y="252" key="com.intellij.ide.util.TipDialog" timestamp="1586640110885">
       <screen x="0" y="23" width="1440" height="793" />
     </state>
-    <state x="397" y="252" key="com.intellij.ide.util.TipDialog/0.23.1440.793@0.23.1440.793" timestamp="1584477076091" />
+    <state x="397" y="252" key="com.intellij.ide.util.TipDialog/0.23.1440.793@0.23.1440.793" timestamp="1586640110885" />
     <state x="720" y="23" width="720" height="792" key="dock-window-1" timestamp="1584378918754">
       <screen x="0" y="23" width="1440" height="793" />
     </state>
