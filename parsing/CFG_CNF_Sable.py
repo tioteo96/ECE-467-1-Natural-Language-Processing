@@ -12,9 +12,11 @@ import sys
 arrow = "-->"
 orsymbol = "|"
 
+
 def usage(argv):
     sys.stderr.write("\nUsage: python3 " + argv[0] + \
                      " <cfg_file> <cnf_file>\n\n");
+
 
 def main(argv):
     numarg = len(argv)
@@ -24,7 +26,7 @@ def main(argv):
 
     filenameIn = argv[1];
     filenameOut = argv[2];
-    
+
     try:
         fileIn = open(filenameIn, "r")
     except:
@@ -43,12 +45,12 @@ def main(argv):
     sys.stdout.write("\nLoading grammar...\n")
     validRules = {}
     for line in fileIn:
-        if line[0] == "#": # This line is a comment, skip it
+        if line[0] == "#":  # This line is a comment, skip it
             continue
         line = line[:-1]
-        if not line.strip(): # ignore blank lines (only white space)
+        if not line.strip():  # ignore blank lines (only white space)
             continue
-        tokens = line.split() # split by whitespace
+        tokens = line.split()  # split by whitespace
         numTokens = len(tokens)
 
         # Perform some error checks, skip lines with errors
@@ -76,23 +78,23 @@ def main(argv):
                 break
 
             if (i == 0 and tokens[i] == orsymbol) or \
-               (i == 2 and tokens[i] == orsymbol) or \
-               (i == numTokens-1 and tokens[i] == orsymbol):
+                    (i == 2 and tokens[i] == orsymbol) or \
+                    (i == numTokens - 1 and tokens[i] == orsymbol):
                 sys.stderr.write("Error: Misplaced OR: " + line + "\n")
                 isError = True
                 break
 
             if i > 1 and \
-               not tokens[i] == orsymbol and \
-               not tokens[i][0].isupper() and \
-               not tokens[i][0].islower() and \
-               not tokens[i][0].isdigit():
+                    not tokens[i] == orsymbol and \
+                    not tokens[i][0].isupper() and \
+                    not tokens[i][0].islower() and \
+                    not tokens[i][0].isdigit():
                 sys.stderr.write("Error: Invalid token: " + tokens[i] + \
                                  "\n  in line: " + line + "\n")
                 isError = True
                 break
 
-            if i > 2 and tokens[i] == orsymbol and tokens[i-1] == orsymbol:
+            if i > 2 and tokens[i] == orsymbol and tokens[i - 1] == orsymbol:
                 sys.stderr.write("Error: Empty clause: " + line + "\n")
                 isError = True
                 break
@@ -102,23 +104,23 @@ def main(argv):
 
         # If we get here, the line had no detected errors
         # Process the line and store the detected rule(s)
-        nonterminal = tokens[0] # this is the non-terminal on the lhs
+        nonterminal = tokens[0]  # this is the non-terminal on the lhs
         curStart = 2
         # Split the rule in case of OR symbol(s)
-        for i in range(2,numTokens+1):
+        for i in range(2, numTokens + 1):
             if i == numTokens or tokens[i] == orsymbol:
                 # Valid rhs spans curStart to i-1
-                rhs = tokens[curStart : i]
+                rhs = tokens[curStart: i]
 
                 # Store rule
                 if not nonterminal in validRules.keys():
                     validRules[nonterminal] = []
                 if not rhs in validRules[nonterminal]:
                     validRules[nonterminal].append(rhs)
-                
-                curStart = i+1                
 
-    # Close input file
+                curStart = i + 1
+
+                # Close input file
     fileIn.close()
 
     # All valid rules are now in the validRules dictionary
@@ -149,8 +151,8 @@ def main(argv):
 
             # Check if already in CNF format
             if (len(rhs) == 1 and rhs[0][0].islower()) or \
-               (len(rhs) == 1 and rhs[0][0].isdigit()) or \
-               (len(rhs) == 2 and rhs[0][0].isupper() and rhs[1][0].isupper()):
+                    (len(rhs) == 1 and rhs[0][0].isdigit()) or \
+                    (len(rhs) == 2 and rhs[0][0].isupper() and rhs[1][0].isupper()):
                 # Store rule (aleady valid in CNF)
                 if not key in cnfRules.keys():
                     cnfRules[key] = []
@@ -190,7 +192,7 @@ def main(argv):
     # Need to avoid infinite loops if also C --> A
     # Also if D --> A, need to avoid infinite loops starting from D
 
-    singletons = {} # Stores all singletons for each non-terminal
+    singletons = {}  # Stores all singletons for each non-terminal
 
     # Using doLoop to determine if another pass is needed
     # Start it as true, so at least one pass occurs
@@ -210,7 +212,7 @@ def main(argv):
                     # Ignore rules of the form A --> A
                     if key == rhs[0]:
                         continue
-                    
+
                     # Add rhs[0] to key's list if it is not already there
                     if not key in singletons.keys():
                         singletons[key] = []
@@ -230,17 +232,17 @@ def main(argv):
                                 # If new rule is in CNF format, store it
                                 if (len(rhsNew) == 1 and \
                                     rhsNew[0][0].islower()) or \
-                                    (len(rhsNew) == 1 and \
-                                     rhsNew[0][0].isdigit()) or \
-                                     (len(rhsNew) == 2 and \
-                                      rhsNew[0][0].isupper() and \
-                                      rhsNew[1][0].isupper()):
+                                        (len(rhsNew) == 1 and \
+                                         rhsNew[0][0].isdigit()) or \
+                                        (len(rhsNew) == 2 and \
+                                         rhsNew[0][0].isupper() and \
+                                         rhsNew[1][0].isupper()):
                                     # Store rule (aleady valid in CNF)
                                     if not key in cnfRules.keys():
                                         cnfRules[key] = []
                                     if not rhsNew in cnfRules[key]:
                                         cnfRules[key].append(rhsNew)
-                                
+
                         doLoop = True
 
     # Display all singletons (comment or uncomment as desired)
@@ -261,7 +263,7 @@ def main(argv):
     #         for j in rhs:
     #             sys.stdout.write(" " + j)
     #         sys.stdout.write("\n")
-       
+
     # Only cases left to fix are long rules
 
     for key in validRules.keys():
@@ -307,6 +309,7 @@ def main(argv):
             fileOut.write("\n")
 
     sys.stdout.write("Done!\n")
+
 
 if __name__ == "__main__":
     main(sys.argv)

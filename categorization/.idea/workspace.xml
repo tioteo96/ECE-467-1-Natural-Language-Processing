@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d446e7b-cae4-4348-abf3-c8f3de82fed4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../parsing/CKY.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../parsing/CKY.py" beforeDir="false" afterPath="$PROJECT_DIR$/../parsing/CKY.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../parsing/CNF.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../parsing/CNF_original.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../parsing/Sable.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../parsing/CFG_CNF_Sable.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +33,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager">
@@ -87,6 +90,8 @@
       <workItem from="1586236789341" duration="5000" />
       <workItem from="1586277454566" duration="57000" />
       <workItem from="1586640110710" duration="2000" />
+      <workItem from="1586812768436" duration="812000" />
+      <workItem from="1586814034709" duration="2610000" />
     </task>
     <servers />
   </component>
