@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d446e7b-cae4-4348-abf3-c8f3de82fed4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../parsing/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../parsing/CKY.py" beforeDir="false" afterPath="$PROJECT_DIR$/../parsing/CKY.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../parsing/CNF.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../parsing/CNF_original.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../parsing/Sable.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../parsing/CFG_CNF_Sable.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +25,6 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
@@ -91,12 +89,14 @@
       <workItem from="1586277454566" duration="57000" />
       <workItem from="1586640110710" duration="2000" />
       <workItem from="1586812768436" duration="812000" />
-      <workItem from="1586814034709" duration="2610000" />
+      <workItem from="1586814034709" duration="3818000" />
+      <workItem from="1586838091993" duration="1578000" />
+      <workItem from="1586969725156" duration="134000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
     <state x="320" y="85" key="#Inspections" timestamp="1584148514777">
