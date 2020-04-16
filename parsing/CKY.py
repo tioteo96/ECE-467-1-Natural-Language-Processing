@@ -99,7 +99,7 @@ def main(argv):
             for node in complete:
                 output = ""
                 output = traverse(node, output)
-                sys.stdout.write('Parse' + str(num) + ': ' + output + '\n')
+                sys.stdout.write('Parse ' + str(num) + ': ' + output + '\n')
                 num += 1
             sys.stdout.write('Total of ' + str(len(complete)) + ' valid parses found ...\n\n')
 
