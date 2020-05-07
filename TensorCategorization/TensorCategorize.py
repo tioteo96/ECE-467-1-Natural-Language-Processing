@@ -6,11 +6,11 @@ import numpy as np
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-training_portion = 0.8
+training_portion = 0.9
 dict_size = 5000
-max_len = 300
+max_len = 210
 embed_D = 64
-epochs_num = 10
+epochs_num = 40
 
 
 def parse_arg():
@@ -94,7 +94,28 @@ def preprocessing(train_docs, train_labels, validate_docs, validate_labels):
     train_labels_seq = np.array(tokenizer2.texts_to_sequences(train_labels))
     validate_labels_seq = np.array(tokenizer2.texts_to_sequences(validate_labels))
 
-    return train_pad, validate_pad, train_labels_seq, validate_labels_seq
+    return train_pad, validate_pad, train_labels_seq, validate_labels_seq, tokenizer1, tokenizer2
+
+
+def test_pp(test_set, t1, t2):
+    test_docs = []
+    STOPWORDS = set(stopwords.words('english'))
+
+    for file in test_set:
+        cur_file = open(file[0], 'r')
+        file_content = " ".join((cur_file.read().lower()).split())
+        for word in STOPWORDS:
+            sw = ' ' + word + ' '
+            file_content = file_content.replace(sw, ' ')
+        test_docs.append(file_content)
+
+    test_labels = list(map(lambda x: x[1], test_set))
+
+    test_docs_seq = t1.texts_to_sequences(test_docs)
+    test_pad = pad_sequences(test_docs_seq, maxlen=max_len, padding='post', truncating='post')
+    test_labels_seq = np.array(t2.texts_to_sequences(test_labels))
+
+    return test_pad, test_labels_seq
 
 
 def RNN_train(t_pad, v_pad, t_labels_seq, v_labels_seq):
@@ -117,16 +138,18 @@ def RNN_train(t_pad, v_pad, t_labels_seq, v_labels_seq):
 
     return model
 
-def RNN_test(model):
-    print('hello')
-
 
 def main():
     train_set, test_set = parse_arg()
     train_docs, train_labels, validate_docs, validate_labels = load_text(train_set)
-    t_pad, v_pad, t_labels_seq, v_labels_seq = preprocessing(train_docs, train_labels, validate_docs, validate_labels)
+    t_pad, v_pad, t_labels_seq, v_labels_seq, t1, t2 = preprocessing(train_docs, train_labels, validate_docs, validate_labels)
+    test_pad, test_labels_seq = test_pp(test_set, t1, t2)
+
     model = RNN_train(t_pad, v_pad, t_labels_seq, v_labels_seq)
-    RNN_test(model)
+
+    model.evaluate(test_pad, test_labels_seq, verbose=2)
+    model.save('model9.h5')
+
 
 if __name__ == '__main__':
     main()
