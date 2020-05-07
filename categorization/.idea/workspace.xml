@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d446e7b-cae4-4348-abf3-c8f3de82fed4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../parsing/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../parsing/CKY.py" beforeDir="false" afterPath="$PROJECT_DIR$/../parsing/CKY.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../tensorCategorize/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/../tensorCategorize/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,6 +90,7 @@
       <workItem from="1586814034709" duration="3818000" />
       <workItem from="1586838091993" duration="1578000" />
       <workItem from="1586969725156" duration="134000" />
+      <workItem from="1588591554316" duration="38000" />
     </task>
     <servers />
   </component>
