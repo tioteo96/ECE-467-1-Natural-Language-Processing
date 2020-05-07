@@ -120,8 +120,6 @@ def test_pp(test_set, t1, t2):
 
 def RNN_train(t_pad, v_pad, t_labels_seq, v_labels_seq):
     # TODO activation = softmax / relu / tanh / sigmoid / hard_sigmoid / exponential / linear
-    # TODO embed_D
-    # TODO last Dense layer 6 -> 5
     model = tf.keras.Sequential([
         tf.keras.layers.Embedding(dict_size, embed_D),
         tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(embed_D)),
@@ -130,8 +128,6 @@ def RNN_train(t_pad, v_pad, t_labels_seq, v_labels_seq):
         tf.keras.layers.Dense(6, activation='softmax')
     ])
     model.summary()
-    # TODO batch size?
-    # TODO loss =
     # TODO optimizer = sgd / RMSprp / Adagrad/ Adadelta / Adam / Adamax / Nadam
     model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     history = model.fit(t_pad, t_labels_seq, epochs=epochs_num, validation_data=(v_pad, v_labels_seq), verbose=1)
@@ -148,7 +144,7 @@ def main():
     model = RNN_train(t_pad, v_pad, t_labels_seq, v_labels_seq)
 
     model.evaluate(test_pad, test_labels_seq, verbose=2)
-    model.save('model9.h5')
+    model.save('model2.h5')
 
 
 if __name__ == '__main__':
